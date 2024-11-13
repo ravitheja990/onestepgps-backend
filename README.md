@@ -14,6 +14,7 @@ This project is a backend service for interacting with the OneStepGPS API, retri
   - [Features](#features)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
+  - [Project Structure (MVC)](#project-structure-mvc)
   - [Configuration](#configuration)
   - [API Endpoints](#api-endpoints)
 
@@ -25,20 +26,21 @@ This project is a backend service for interacting with the OneStepGPS API, retri
    ```bash
    git clone https://github.com/ravitheja990/onestepgps-backend.git
    cd onestepgps-backend
-Install dependencies: Ensure you have Go 1.23.3 or later installed.
 
-Build the project:
+2. Install dependencies: Ensure you have Go 1.23.3 or later installed.
 
-``bash
+3.  Build the project:
 
+  ```bash
   go build
 
-Project Structure (MVC)
-main.go: Entry point of the application
-controllers/: Contains the controllers that handle HTTP requests and responses
-models/: Contains the data models and business logic
-services/: Contains the service layer, which manages interaction with the external OneStepGPS API
-utils/: Contains utility functions and shared components
+## Project Structure (MVC)
+- main.go: Entry point of the application
+- controllers/: Contains the controllers that handle HTTP requests and responses
+- models/: Contains the data models and business logic
+- services/: Contains the service layer, which manages interaction with the external OneStepGPS API
+- utils/: Contains utility functions and shared components
+
 ## Configuration
 The API requires an API key from OneStepGPS to fetch the GPS data.
 
@@ -46,9 +48,8 @@ Update the apiKey constant in services/device_service.go with your OneStepGPS AP
 Usage
 Start the server:
 
-bash
-
-go run main.go
+```bash
+  go run main.go
 The server will run on http://localhost:8080 by default.
 
 ## API Endpoints
@@ -56,8 +57,6 @@ GET /api/devices
 Fetches the latest device data from the OneStepGPS API.
 
 Response:
-
-
 
 [
   {

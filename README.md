@@ -31,8 +31,8 @@ This project is a backend service for interacting with the OneStepGPS API, retri
 
 3.  Build the project:
 
-  ```bash
-  go build
+   ```bash
+   go build
 
 ## Project Structure (MVC)
 - main.go: Entry point of the application
@@ -49,7 +49,7 @@ Usage
 Start the server:
 
 ```bash
-  go run main.go
+go run main.go
 The server will run on http://localhost:8080 by default.
 
 ## API Endpoints

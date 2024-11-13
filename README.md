@@ -1,6 +1,6 @@
-# OneStepGPS Backend
+# OneStepGPS Backend (MVC Version)
 
-This project is a backend service for interacting with the OneStepGPS API, retrieving and managing GPS device data and user preferences. It includes endpoints to fetch device details, get user preferences, and update preferences.
+This project is a backend service for interacting with the OneStepGPS API, retrieving and managing GPS device data and user preferences. It follows the Model-View-Controller (MVC) architecture, making the code more modular, maintainable, and scalable.
 
 ## Features
 
@@ -10,48 +10,53 @@ This project is a backend service for interacting with the OneStepGPS API, retri
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Development](#development)
+- [OneStepGPS Backend (MVC Version)](#onestepgps-backend-mvc-version)
+  - [Features](#features)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [API Endpoints](#api-endpoints)
+
 
 ## Installation
 
-Clone the repository:
+1. Clone the repository:
 
-```bash
-git clone https://github.com/ravitheja990/onestepgps-backend.git
-cd onestepgps-backend
-
+   ```bash
+   git clone https://github.com/ravitheja990/onestepgps-backend.git
+   cd onestepgps-backend
 Install dependencies: Ensure you have Go 1.23.3 or later installed.
 
-go build
+Build the project:
 
+``bash
 
-Configuration
+  go build
+
+Project Structure (MVC)
+main.go: Entry point of the application
+controllers/: Contains the controllers that handle HTTP requests and responses
+models/: Contains the data models and business logic
+services/: Contains the service layer, which manages interaction with the external OneStepGPS API
+utils/: Contains utility functions and shared components
+## Configuration
 The API requires an API key from OneStepGPS to fetch the GPS data.
 
-Update the apiKey constant in onestepgps.go with your OneStepGPS API key.
-
+Update the apiKey constant in services/device_service.go with your OneStepGPS API key.
 Usage
 Start the server:
 
 bash
-Copy code
 
-go run onestepgps.go
-
+go run main.go
 The server will run on http://localhost:8080 by default.
 
-API Endpoints
+## API Endpoints
 GET /api/devices
 Fetches the latest device data from the OneStepGPS API.
 
 Response:
 
-json
-Copy code
 
 
 [
@@ -65,14 +70,12 @@ Copy code
   },
   ...
 ]
-
 GET /api/preferences
 Retrieves user preferences such as sort order, hidden devices, and custom icons.
 
 Response:
 
-json
-Copy code
+
 
 {
   "sort_order": "string",
@@ -81,11 +84,12 @@ Copy code
     "device_id": "icon_path"
   }
 }
-
 POST /api/preferences/set
 Updates user preferences.
 
 Request Body:
+
+
 
 {
   "sort_order": "string",

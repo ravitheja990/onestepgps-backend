@@ -71,10 +71,15 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		email := r.Header.Get("X-Session-Email")
+		fmt.Println("AuthMiddleware: Received email from header:", email)
+
 		if !models.ValidateSession(email) {
+			fmt.Println("AuthMiddleware: Unauthorized, session not found for email:", email)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
+
+		fmt.Println("AuthMiddleware: Session validated for email:", email)
 		next(w, r)
 	}
 }

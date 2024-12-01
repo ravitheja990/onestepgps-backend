@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"onestepgps-backend/controllers"
@@ -11,37 +12,36 @@ func main() {
 	// Initialize the database
 	models.InitDB()
 
-	// Wrap all routes with the CORS middleware
+	//routes
 	http.HandleFunc("/login", corsMiddleware(controllers.LoginHandler))
 	http.HandleFunc("/signup", corsMiddleware(controllers.SignupHandler))
 	http.HandleFunc("/devices", corsMiddleware(controllers.AuthMiddleware(controllers.GetDevicesHandler)))
 	http.HandleFunc("/preferences", corsMiddleware(controllers.AuthMiddleware(controllers.SavePreferencesHandler)))
 	http.HandleFunc("/preferences/get", corsMiddleware(controllers.AuthMiddleware(controllers.GetPreferencesHandler)))
 
-	// Start the server
-	log.Println("Server started on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// starting the server at 8080 port
+	fmt.Println("Server starting at http://localhost:8080") // Using fmt for logging server start
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		fmt.Println("Server stopped unexpectedly:", err)
+	}
 }
 
 func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Set CORS headers
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8081") // Allow requests from frontend origin
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8081")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Session-Email")
 
-		// Handle preflight (OPTIONS) request
 		if r.Method == http.MethodOptions {
+			fmt.Println("OPTIONS request received")
 			w.WriteHeader(http.StatusOK)
 			return
 		}
-
-		// Call the next handler
 		next(w, r)
 	}
 }
 
 func protectedHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
+	log.Println("Accessing protected route")
 	w.Write([]byte("Access granted to protected route"))
 }

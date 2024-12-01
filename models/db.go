@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -9,19 +10,19 @@ import (
 
 var DB *sql.DB
 
-func InitDB() {
+func InitDB() error {
 	var err error
-	// Update the connection string with your MySQL credentials
 	DB, err = sql.Open("mysql", "root:root@tcp(localhost:3306)/onestepgps")
 	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+		fmt.Println("Error opening database connection:", err)
+		return err
 	}
 
-	// Verify the connection
-	err = DB.Ping()
-	if err != nil {
-		log.Fatal("Failed to ping database:", err)
+	if err = DB.Ping(); err != nil {
+		log.Println("Database ping failed. Please check your connection settings.")
+		return err
 	}
 
-	log.Println("Database connected successfully.")
+	fmt.Println("Database connection established.")
+	return nil
 }

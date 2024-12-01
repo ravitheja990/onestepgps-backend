@@ -17,21 +17,19 @@ func SavePreferencesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	bodyBytes, _ := io.ReadAll(r.Body)
-	log.Printf("Raw body: %s\n", string(bodyBytes))
+	log.Printf("Raw body received: %s\n", string(bodyBytes))
 
 	var preferences models.Preferences
-	err := json.Unmarshal(bodyBytes, &preferences)
-	if err != nil {
+	if err := json.Unmarshal(bodyBytes, &preferences); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
 	preferences.Email = email
-	log.Printf("Decoded preferences object: %+v\n", preferences)
+	log.Printf("Parsed preferences: %+v\n", preferences)
 
-	err = services.SavePreferences(preferences)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if err := services.SavePreferences(preferences); err != nil {
+		http.Error(w, "Failed to save preferences", http.StatusInternalServerError)
 		return
 	}
 
@@ -39,7 +37,6 @@ func SavePreferencesHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Preferences saved successfully"))
 }
 
-// GetPreferencesHandler handles fetching user preferences
 func GetPreferencesHandler(w http.ResponseWriter, r *http.Request) {
 	email := r.Header.Get("X-Session-Email")
 	if email == "" {
@@ -49,7 +46,7 @@ func GetPreferencesHandler(w http.ResponseWriter, r *http.Request) {
 
 	preferences, err := services.GetPreferences(email)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		http.Error(w, "Preferences not found", http.StatusNotFound)
 		return
 	}
 

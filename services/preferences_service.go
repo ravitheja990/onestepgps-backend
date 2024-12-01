@@ -8,7 +8,8 @@ import (
 )
 
 func SavePreferences(preferences models.Preferences) error {
-	log.Println("Saving these preferences :: ", preferences)
+	log.Println("Saving these preferences:", preferences)
+
 	_, err := models.DB.Exec(`
         INSERT INTO preferences (email, sort_order, hide_inactive, map_zoom_level)
         VALUES (?, ?, ?, ?)
@@ -23,7 +24,7 @@ func SavePreferences(preferences models.Preferences) error {
 		return errors.New("failed to save preferences")
 	}
 
-	log.Println("Preferences saved successfully for user:", preferences.Email)
+	log.Println("Preferences saved for user:", preferences.Email)
 	return nil
 }
 
@@ -39,11 +40,13 @@ func GetPreferences(email string) (models.Preferences, error) {
 	if err == sql.ErrNoRows {
 		log.Println("Preferences not found for user:", email)
 		return preferences, errors.New("preferences not found")
-	} else if err != nil {
-		log.Println("Error fetching preferences:", err)
+	}
+
+	if err != nil {
+		log.Println("Error retrieving preferences:", err)
 		return preferences, errors.New("failed to fetch preferences")
 	}
 
-	log.Println("Preferences retrieved successfully for user:", email)
+	log.Println("Preferences retrieved for user:", email)
 	return preferences, nil
 }

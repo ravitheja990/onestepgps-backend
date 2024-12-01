@@ -7,7 +7,6 @@ import (
 	"onestepgps-backend/models"
 )
 
-// LoginHandler handles user login
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("inside signuphandler")
 	if r.Method != http.MethodPost {
@@ -37,7 +36,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"message": "Login successful"}`))
 }
 
-// SignupHandler handles user registration
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("inside signuphandler")
 	if r.Method != http.MethodPost {
@@ -53,11 +51,15 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Register user
 	err = models.RegisterUser(signupData.Email, signupData.Password)
 	fmt.Println("signupData.Email is :: ", signupData.Email)
 	fmt.Println("signupData.Password is :: ", signupData.Password)
 	if err != nil {
+		if err.Error() == "user already exists" {
+			w.WriteHeader(http.StatusConflict)
+			w.Write([]byte(`{"message": "User already registered"}`))
+			return
+		}
 		http.Error(w, err.Error(), http.StatusConflict)
 		return
 	}
@@ -67,7 +69,6 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"message": "Signup successful"}`))
 }
 
-// AuthMiddleware protects routes and validates the session
 func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		email := r.Header.Get("X-Session-Email")

@@ -9,18 +9,18 @@ import (
 )
 
 func main() {
-	// Initialize the database
+	// Initializing the database
 	models.InitDB()
 
-	//routes
+	//api routes
 	http.HandleFunc("/login", corsMiddleware(controllers.LoginHandler))
 	http.HandleFunc("/signup", corsMiddleware(controllers.SignupHandler))
 	http.HandleFunc("/devices", corsMiddleware(controllers.AuthMiddleware(controllers.GetDevicesHandler)))
-	http.HandleFunc("/preferences", corsMiddleware(controllers.AuthMiddleware(controllers.SavePreferencesHandler)))
+	http.HandleFunc("/save-preferences", corsMiddleware(controllers.AuthMiddleware(controllers.SavePreferencesHandler)))
 	http.HandleFunc("/preferences/get", corsMiddleware(controllers.AuthMiddleware(controllers.GetPreferencesHandler)))
 
 	// starting the server at 8080 port
-	fmt.Println("Server starting at http://localhost:8080") // Using fmt for logging server start
+	fmt.Println("Server starting at http://localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		fmt.Println("Server stopped unexpectedly:", err)
 	}

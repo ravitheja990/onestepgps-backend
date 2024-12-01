@@ -2,39 +2,57 @@ package controllers
 
 import (
 	"encoding/json"
+	"io"
+	"log"
 	"net/http"
 	"onestepgps-backend/models"
-	"sync"
+	"onestepgps-backend/services"
 )
 
-var (
-	preferences = models.Preferences{
-		SortOrder:     "name",
-		HiddenDevices: []string{},
-		CustomIcons:   make(map[string]string),
-	}
-	mu sync.Mutex
-)
-
-// GetPreferencesHandler handles requests to fetch user preferences
-func GetPreferencesHandler(w http.ResponseWriter, r *http.Request) {
-	mu.Lock()
-	defer mu.Unlock()
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(preferences)
-}
-
-// SetPreferencesHandler handles requests to update user preferences
-func SetPreferencesHandler(w http.ResponseWriter, r *http.Request) {
-	var prefs models.Preferences
-	if err := json.NewDecoder(r.Body).Decode(&prefs); err != nil {
-		http.Error(w, "Invalid input", http.StatusBadRequest)
+func SavePreferencesHandler(w http.ResponseWriter, r *http.Request) {
+	email := r.Header.Get("X-Session-Email")
+	if email == "" {
+		http.Error(w, "Missing session email", http.StatusUnauthorized)
 		return
 	}
 
-	mu.Lock()
-	preferences = prefs
-	mu.Unlock()
+	bodyBytes, _ := io.ReadAll(r.Body)
+	log.Printf("Raw body: %s\n", string(bodyBytes))
 
-	w.WriteHeader(http.StatusNoContent)
+	var preferences models.Preferences
+	err := json.Unmarshal(bodyBytes, &preferences)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	preferences.Email = email
+	log.Printf("Decoded preferences object: %+v\n", preferences)
+
+	err = services.SavePreferences(preferences)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Preferences saved successfully"))
+}
+
+// GetPreferencesHandler handles fetching user preferences
+func GetPreferencesHandler(w http.ResponseWriter, r *http.Request) {
+	email := r.Header.Get("X-Session-Email")
+	if email == "" {
+		http.Error(w, "Missing session email", http.StatusUnauthorized)
+		return
+	}
+
+	preferences, err := services.GetPreferences(email)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(preferences)
 }

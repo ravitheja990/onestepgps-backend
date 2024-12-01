@@ -1,7 +1,8 @@
 package models
 
 type Preferences struct {
-	SortOrder     string            `json:"sort_order"`
-	HiddenDevices []string          `json:"hidden_devices"`
-	CustomIcons   map[string]string `json:"custom_icons"`
+	Email        string `json:"email"`
+	SortOrder    string `json:"sortOrder"`
+	HideInactive bool   `json:"hideInactive"`
+	MapZoomLevel int    `json:"mapZoomLevel"`
 }

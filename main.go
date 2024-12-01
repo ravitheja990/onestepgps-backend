@@ -15,6 +15,8 @@ func main() {
 	http.HandleFunc("/login", corsMiddleware(controllers.LoginHandler))
 	http.HandleFunc("/signup", corsMiddleware(controllers.SignupHandler))
 	http.HandleFunc("/devices", corsMiddleware(controllers.AuthMiddleware(controllers.GetDevicesHandler)))
+	http.HandleFunc("/preferences", corsMiddleware(controllers.AuthMiddleware(controllers.SavePreferencesHandler)))
+	http.HandleFunc("/preferences/get", corsMiddleware(controllers.AuthMiddleware(controllers.GetPreferencesHandler)))
 
 	// Start the server
 	log.Println("Server started on :8080")

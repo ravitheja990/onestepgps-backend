@@ -5,15 +5,27 @@ import (
 	"fmt"
 	"net/http"
 	"onestepgps-backend/models"
-	"strings"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
-const (
-	apiKey = "Xl-8_ceibpMHqr4YZ72uFy5xQfjbOPXstocE8b_Zkmw"
-	apiURL = "https://track.onestepgps.com/v3/api/public/device?latest_point=true&api-key=" + apiKey
-)
+const apiBaseURL = "https://track.onestepgps.com/v3/api/public/device?latest_point=true&api-key="
+
+func init() {
+	// Load .env file
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("No .env file found, proceeding with environment variables.")
+	}
+}
 
 func FetchDevices() ([]models.Device, error) {
+	apiKey := os.Getenv("API_KEY")
+	if apiKey == "" {
+		return nil, fmt.Errorf("API_KEY environment variable is not set")
+	}
+
+	apiURL := apiBaseURL + apiKey
 	resp, err := http.Get(apiURL)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch data: %w", err)
@@ -59,22 +71,4 @@ func FetchDevices() ([]models.Device, error) {
 		}
 	}
 	return devices, nil
-}
-
-// PrintDevices outputs the fetched device information in a formatted manner.
-func PrintDevices(devices []models.Device) {
-	if len(devices) == 0 {
-		fmt.Println("No devices available.")
-		return
-	}
-
-	for _, device := range devices {
-		pos := device.CurrentPosition
-		fmt.Printf("Name: %s\n", device.Name)
-		fmt.Printf("Position: {Lat: %.6f, Lng: %.6f, Alt: %.2f m, Angle: %.2f°}\n",
-			pos["Lat"], pos["Lng"], pos["Alt"], pos["Angle"])
-		fmt.Printf("Active: %t\n", device.Active)
-		fmt.Printf("Drive Status: %s\n", device.DriveStatus)
-		fmt.Println(strings.Repeat("-", 40))
-	}
 }

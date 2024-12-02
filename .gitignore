@@ -1,0 +1,26 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+
+# Build output
+/bin/
+/build/
+*.out
+
+# Logs and debugging
+*.log
+*.trace
+
+# Dependency directories (if vendoring is used)
+vendor/
+
+# Environment files
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp

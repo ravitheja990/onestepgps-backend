@@ -25,12 +25,16 @@ This project is a backend service for interacting with the OneStepGPS API, retri
    git clone https://github.com/ravitheja990/onestepgps-backend.git
    cd onestepgps-backend
 
-2. Install dependencies: Ensure you have Go 1.23.3 or later installed.
+2. Install dependencies: Ensure you have Go 1.23.3 or higher version installed.
 
-3. DB Setup: The sql files are stored in db folder and the database name is onestepgps
+3. DB Setup: The sql files are stored in db folder and the database name is onestepgps. 
     ```
     mysql -u <username> -p <database_name> < /path/to/file.sql
 
+4. OneStepGPS Api Key Setup: 
+   Store the api key in below format:
+   ```
+   API_KEY=<onestepgps-api-key>
 
 ## Project Structure:
 
@@ -54,7 +58,6 @@ This project is a backend service for interacting with the OneStepGPS API, retri
   - `device_service.go`: Fetches device data from the OneStepGPS API.
   - `preferences_service.go`: Manages user preferences.
 
-
 ## Configuration
 The API requires an API key from OneStepGPS to fetch the GPS data.
 
@@ -64,4 +67,4 @@ Start the server:
 
 ```bash
 go run main.go
-The server will run on http://localhost:8080 by default.
+The server will run on http://localhost:8080.

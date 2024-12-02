@@ -16,8 +16,6 @@ This project is a backend service for interacting with the OneStepGPS API, retri
   - [Installation](#installation)
   - [Project Structure (MVC)](#project-structure-mvc)
   - [Configuration](#configuration)
-  - [API Endpoints](#api-endpoints)
-
 
 ## Installation
 
@@ -29,17 +27,33 @@ This project is a backend service for interacting with the OneStepGPS API, retri
 
 2. Install dependencies: Ensure you have Go 1.23.3 or later installed.
 
-3.  Build the project:
+3. DB Setup: The sql files are stored in db folder and the database name is onestepgps
+    ```
+    mysql -u <username> -p <database_name> < /path/to/file.sql
 
-   ```bash
-   go build
 
-## Project Structure (MVC)
-- main.go: Entry point of the application
-- controllers/: Contains the controllers that handle HTTP requests and responses
-- models/: Contains the data models and business logic
-- services/: Contains the service layer, which manages interaction with the external OneStepGPS API
-- utils/: Contains utility functions and shared components
+## Project Structure:
+
+- main.go The app's entry point, sets up the server and routes.
+
+- controllers/
+  - `auth_controller.go`: User login and signup.
+  - `device_controller.go`: Device-related APIs.
+  - `preference_controller.go`: User preferences APIs.
+
+- db/
+  - `onestepgps_preferences.sql`: User preferences schema.
+  - `onestepgps_sessions.sql`: Session management schema.
+  - `onestepgps_users.sql`: User accounts schema.
+
+- models/
+  - `db.go`: Database connection setup.
+  - `device.go`, `preferences.go`, `user.go`: Data models for devices, preferences, and users.
+
+- services/
+  - `device_service.go`: Fetches device data from the OneStepGPS API.
+  - `preferences_service.go`: Manages user preferences.
+
 
 ## Configuration
 The API requires an API key from OneStepGPS to fetch the GPS data.

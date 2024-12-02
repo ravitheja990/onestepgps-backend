@@ -2,20 +2,20 @@
 
 This project is a backend service for interacting with the OneStepGPS API, retrieving and managing GPS device data and user preferences. It follows the Model-View-Controller (MVC) architecture, making the code more modular, maintainable, and scalable.
 
+## Table of Contents
+
+- [OneStepGPS Backend (MVC Version)](#onestepgps-backend-mvc-version)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Project Structure (MVC)](#project-structure-mvc)
+  - [Configuration](#configuration)
+
 ## Features
 
 - Fetch the latest GPS data from the OneStepGPS API
 - Retrieve and update user preferences for device sorting and customizations
 - Expose RESTful endpoints to interact with devices and preferences
-
-## Table of Contents
-
-- [OneStepGPS Backend (MVC Version)](#onestepgps-backend-mvc-version)
-  - [Features](#features)
-  - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-  - [Project Structure (MVC)](#project-structure-mvc)
-  - [Configuration](#configuration)
 
 ## Installation
 

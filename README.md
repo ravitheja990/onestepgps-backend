@@ -21,7 +21,7 @@ This project is a backend service for interacting with the OneStepGPS API, retri
 
 1. Clone the repository:
 
-   ```bash
+   ```
    git clone https://github.com/ravitheja990/onestepgps-backend.git
    cd onestepgps-backend
 
@@ -65,6 +65,6 @@ Update the apiKey constant in services/device_service.go with your OneStepGPS AP
 Usage
 Start the server:
 
-```bash
+```
 go run main.go
 The server will run on http://localhost:8080.

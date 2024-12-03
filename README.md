@@ -59,10 +59,8 @@ This project is a backend service for interacting with the OneStepGPS API, retri
   - `preferences_service.go`: Manages user preferences.
 
 ## Configuration
-The API requires an API key from OneStepGPS to fetch the GPS data.
+The project requires an API key from OneStepGPS to fetch the GPS data.
 
-Update the apiKey constant in services/device_service.go with your OneStepGPS API key.
-Usage
 Start the server:
 
 ```
